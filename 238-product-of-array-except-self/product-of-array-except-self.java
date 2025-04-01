@@ -17,6 +17,6 @@ class Solution {
             right *= nums[i];
         }
 
-        return output; 
+        return output;        
     }
 }
