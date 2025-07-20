@@ -1,8 +1,6 @@
 class Solution {
     public int subarraysWithKDistinct(int[] nums, int k) {
-        int subWithMaxK = subarrayWithAtMostK(nums, k);
-        int reducedSubWithMaxK = subarrayWithAtMostK(nums, k - 1);
-        return subWithMaxK - reducedSubWithMaxK;
+        return subarrayWithAtMostK(nums, k) - subarrayWithAtMostK(nums, k - 1);
     }
     
     public int subarrayWithAtMostK(int[] nums, int k) {
