@@ -17,33 +17,35 @@ class Solution {
 
     public int minFallingPathSum(int[][] matrix) {
         int n = matrix.length;
-        int dp[][] = new int[n][n];
+        int dp[] = new int[n];
         for(int i=0;i<n;i++){
-                dp[0][i]=matrix[0][i];
+                dp[i]=matrix[0][i];
         }
         for(int i=1;i<n;i++){
+            int curr[] = new int[n];
             for(int j=0;j<n;j++){
-                int s = matrix[i][j] + dp[i-1][j];
+                int s = matrix[i][j] + dp[j];
                 int ld = matrix[i][j];
                 if(j-1>=0){
-                    ld += dp[i-1][j-1];
+                    ld += dp[j-1];
                 }
                 else{
                     ld = Integer.MAX_VALUE;
                 }
                 int rd = matrix[i][j];
                 if(j+1<=n-1){
-                    rd += dp[i-1][j+1];
+                    rd += dp[j+1];
                 }
                 else{
                     rd= Integer.MAX_VALUE;
                 }
-                dp[i][j] = Integer.min(s, Integer.min(ld,rd));
-            }   
+                curr[j] = Integer.min(s, Integer.min(ld,rd));
+            } 
+            dp=curr;  
         }
-        int mini = dp[n-1][0];
+        int mini = dp[0];
         for(int i=1;i<n;i++){
-                mini=Integer.min(mini,dp[n-1][i]);
+                mini=Integer.min(mini,dp[i]);
         }
         return mini;
     }
