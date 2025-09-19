@@ -11,10 +11,23 @@ class Solution {
         int dp[][]=new int[m+2][m+2];
         for(int i=0;i<m+2;i++){
             for(int j=0;j<m+2;j++){
-                dp[i][j]=-1;
+                dp[i][j]=0;
             }
         }
-        return solve(arr,1,m,dp);
+        for(int i=m;i>=1;i--){
+            for(int j=1;j<=m;j++){
+                if(i>j){
+                    continue;
+                }
+                int mini=Integer.MAX_VALUE;
+                for(int ind=i;ind<=j;ind++){
+                    int cost = arr[j+1]-arr[i-1]+dp[i][ind-1]+dp[ind+1][j];
+                    mini=Math.min(mini,cost);
+                }
+                dp[i][j]=mini;
+            }
+        }
+        return dp[1][m];
     }
 
     public int solve(int arr[],int i,int j, int dp[][]){
