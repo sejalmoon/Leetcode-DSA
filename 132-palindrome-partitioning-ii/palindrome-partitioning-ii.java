@@ -1,11 +1,20 @@
 class Solution {
     public int minCut(String s) {
         int n = s.length();
-        int dp[]=new int[n];
-        for(int i=0;i<n;i++){
-            dp[i]=-1;
+        int dp[]=new int[n+1];
+        dp[n]=0;
+        for(int i=n-1;i>=0;i--){
+            int mini=Integer.MAX_VALUE;
+            for(int ind=i;ind<n;ind++){
+                if(isPalindrome(i,ind,s)){
+                    int cost = 1+dp[ind+1];
+                    mini=Math.min(mini,cost);
+                }
+            }
+            dp[i]=mini;
         }
-        return solve(0,n,s,dp)-1;
+
+        return dp[0]-1;
     }
 
     public int solve(int i, int n, String s, int dp[]){
