@@ -19,7 +19,5 @@ class Solution {
             right++;
         }
         return maxlen;
-
-
     }
 }
