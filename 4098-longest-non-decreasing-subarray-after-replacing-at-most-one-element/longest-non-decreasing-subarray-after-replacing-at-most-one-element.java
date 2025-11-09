@@ -31,9 +31,6 @@ class Solution {
             if(nums[i-1]<=nums[i+1]){
                 maxlen = Math.max(maxlen, left[i-1]+right[i+1]+1);
             }
-            else{
-                maxlen = Math.max(maxlen, Math.max(left[i-1], right[i+1])+1);
-            }
         }
         return maxlen;
     }
