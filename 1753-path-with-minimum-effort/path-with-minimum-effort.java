@@ -33,8 +33,6 @@ class Solution {
             int wt = pq.peek().wt;
             pq.remove();
 
-            if (wt > dist[row][col]) continue;
-
             if (row == n-1 && col == m-1)
                 return wt;
 
