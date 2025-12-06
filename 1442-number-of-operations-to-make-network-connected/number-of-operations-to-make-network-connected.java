@@ -63,7 +63,7 @@ class Solution {
                 extra++;
             }
             else{
-                ds.UnionByRank(connections[i][0], connections[i][1]);
+                ds.UnionBySize(connections[i][0], connections[i][1]);
             }
         }
         int separate = 0;
