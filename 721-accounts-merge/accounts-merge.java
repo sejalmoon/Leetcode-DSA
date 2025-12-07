@@ -58,45 +58,48 @@ class Solution {
         int n = accounts.size();
         DisjointSet ds = new DisjointSet(n);
 
-        Map<String,Integer> mailToAcc = new HashMap<>();
+        Map<String,Integer> mapMailNode = new HashMap<>();
         for(int i = 0; i < n; i++) {
             List<String> account = accounts.get(i);
             for(int j = 1; j < account.size(); j++) {
                 String mail = account.get(j);
-                if(mailToAcc.containsKey(mail)) {
-                    ds.UnionByRank(i, mailToAcc.get(mail));
+                if(mapMailNode.containsKey(mail)) {
+                    ds.UnionByRank(i, mapMailNode.get(mail));
                 } else {
-                    mailToAcc.put(mail, i);
+                    mapMailNode.put(mail, i);
                 }
             }
         }
 
-        Map<Integer,TreeSet<String>> merged = new HashMap<>();
-
-        for(Map.Entry<String,Integer> entry : mailToAcc.entrySet()) {
-            String mail = entry.getKey();
-            int accIndex = entry.getValue();
-
-            int parent = ds.findParent(accIndex);
-
-            merged.putIfAbsent(parent, new TreeSet<>());
-            merged.get(parent).add(mail);
+        ArrayList<String>[] mergedMail = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            mergedMail[i] = new ArrayList<>();
         }
 
-        List<List<String>> result = new ArrayList<>();
-
-        for(Map.Entry<Integer,TreeSet<String>> entry : merged.entrySet()) {
-            int parent = entry.getKey();
-            TreeSet<String> emails = entry.getValue();
-
-            List<String> mergedAcc = new ArrayList<>();
-            mergedAcc.add(accounts.get(parent).get(0)); 
-            mergedAcc.addAll(emails);
-
-            result.add(mergedAcc);
+        for (Map.Entry<String, Integer> it : mapMailNode.entrySet()) {
+            String mail = it.getKey();
+            int node = ds.findParent(it.getValue());
+            mergedMail[node].add(mail);
         }
 
-        return result;
+        List<List<String>> ans = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+
+            if (mergedMail[i].size() == 0) continue;
+
+            Collections.sort(mergedMail[i]);
+
+            List<String> temp = new ArrayList<>();
+            temp.add(accounts.get(i).get(0));   
+
+            for (String mail : mergedMail[i]) {
+                temp.add(mail);
+            }
+            ans.add(temp);
+        }
+
+        return ans;
 
     }
 }
