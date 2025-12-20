@@ -17,18 +17,16 @@ class Solution {
     private int ans = Integer.MIN_VALUE;
 
     public int maxPathSum(TreeNode root) {
-        helper(root);
+        maxPathDown(root);
         return ans;
     }
 
-    private int helper(TreeNode root) {
-        if (root == null) return 0;
+    private int maxPathDown(TreeNode root){
+        if(root == null) return 0;
 
-        int left = Math.max(0, helper(root.left));
-        int right = Math.max(0, helper(root.right));
-
-        ans = Math.max(ans, root.val + left + right);
-
-        return root.val + Math.max(left, right);
+        int left = Math.max(0, maxPathDown(root.left));
+        int right = Math.max(0, maxPathDown(root.right));
+        ans = Math.max(ans, left + right + root.val);
+        return Math.max(left, right) + root.val;
     }
 }
