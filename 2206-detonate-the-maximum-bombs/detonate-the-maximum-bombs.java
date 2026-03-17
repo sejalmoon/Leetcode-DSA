@@ -1,41 +1,51 @@
 class Solution {
     public int maximumDetonation(int[][] bombs) {
+        int n = bombs.length;
         int maxi = 0;
-        int n = bombs.length;
+        List<List<Integer>> adj = new ArrayList<>();
         for(int i = 0; i<n; i++){
-            maxi = Math.max(maxi, bfs(i, bombs));
+            adj.add(new ArrayList<>());
         }
-        return maxi;
-    }
 
-    public int bfs(int node, int[][] bombs){
-        Queue<Integer> q = new LinkedList<>();
-        int n = bombs.length;
-        boolean[] visited = new boolean[n];
+        for(int i = 0; i<n; i++){
+            long x1 = bombs[i][0];
+            long y1 = bombs[i][1];
+            long r = bombs[i][2];
 
-        visited[node] = true;
-        q.add(node);
-        int ans = 1;
+            for(int j = 0; j<n; j++){
+                if(i==j) continue;
 
-        while(!q.isEmpty()){
-            int ind = q.poll();
-            for(int i = 0; i<n; i++){
-                if(!visited[i] && inRange(bombs[ind], bombs[i])){
-                    visited[i] = true;
-                    ans++;
-                    q.add(i);
+                long x2 = bombs[j][0];
+                long y2 = bombs[j][1];
+
+                long dx = x1 - x2;
+                long dy = y1 - y2;
+                long dist = dx*dx + dy*dy;
+                
+                if(dist <= r*r){
+                    adj.get(i).add(j);
                 }
             }
         }
+
+        int ans = 0;
+        for(int i = 0; i<n; i++){
+            boolean[] visited = new boolean[n];
+            ans = Math.max(ans, dfs(i, adj, visited));
+        }
+
         return ans;
+        
     }
 
-    private boolean inRange(int[] p1, int[] p2){
-        long dx = p1[0] - p2[0];
-        long dy = p1[1] - p2[1];
-        long r = p1[2];
-        long dist = dx*dx + dy*dy;
-        return dist <= r*r;
+    private int dfs(int node, List<List<Integer>> adj, boolean[] visited){
+        visited[node] = true;
+        int count = 1;
+        for(int neigh:adj.get(node)){
+            if(!visited[neigh]){
+                count += dfs(neigh, adj, visited);
+            }
+        }
+        return count;
     }
-
 }
